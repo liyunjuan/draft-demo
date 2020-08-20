@@ -1,0 +1,19 @@
+
+.contentWrap {
+  margin-top: 30px;
+}
+
+
+.DraftEditor-root, .htmlWrap {
+  height: 200px;
+  border: 1px solid rgb(204, 204, 204);
+}
+
+.colorWrap {
+  position: relative;
+  display: inline-block;
+}
+.colorPop {
+  position: absolute;
+  top: 20px;
+}
