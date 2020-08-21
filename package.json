@@ -9,12 +9,14 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
+    "classnames": "2.2.5",
     "draft-js-plugins-editor": "3.0.0",
     "draft-js": "0.11.5",
     "draft-js-export-html": "^1.4.1",
     "draftjs-utils": "^0.10.2",
     "draft-js-utils": ">=0.2.0",
-    "react-color": "^2.14.1"
+    "react-color": "^2.14.1",
+    "draftjs-to-html": ">=0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -3,6 +3,7 @@ import {
     RichUtils
 } from 'draft-js'
 import { inlineTypes } from '../config'
+import classNames from 'classnames';
 
 export default class InlineTypesControl extends React.Component {
 
@@ -25,14 +26,14 @@ export default class InlineTypesControl extends React.Component {
             <div style={{ display: 'inline-block', margin: '15px 0' }}>
                 {
                     inlineTypes.map(inlineType =>
-                        <button
+                        <span
                             key={inlineType.style}
                             onMouseDown={(e) => this.clickBtn(e, inlineType.style)}
-                            className={currentStyle.has(inlineType.style) ? 'activeButton' : ''}
+                            className={classNames((currentStyle.has(inlineType.style) ? 'activeButton' : '') ,'s-btn')}
                             style={{ marginRight: 8 }}
                         >
-                            {inlineType.label}
-                        </button>
+                             {inlineType.label}
+                        </span>
                     )
                 }
             </div>

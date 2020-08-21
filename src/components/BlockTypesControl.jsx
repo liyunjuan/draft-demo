@@ -3,6 +3,7 @@ import {
     RichUtils
 } from 'draft-js'
 import { blockTypes } from '../config'
+import classNames from 'classnames';
 
 export default class BlockTypesControl extends React.Component {
 
@@ -16,19 +17,34 @@ export default class BlockTypesControl extends React.Component {
         this.props.onBlockTypeChange(newEditState)
     }
 
+    // 得到当前块样式的label
+    getCurrentBlockLabel = () => {
+        const editorState = this.props.editorState
+        const selection = editorState.getSelection()
+        const blockStyle = editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType()
+        let blockLabel = ''
+        blockTypes.forEach((blockType) => {
+            if (blockType.style === blockStyle) {
+                blockLabel = blockType.label
+                return
+            }
+        })
+        return blockLabel
+    }
+
     render() {
+        const currentStyle = this.props.editorState.getCurrentInlineStyle()
 
         return (
           blockTypes.map(blockType => (
-            <button
+            <span className={classNames((this.getCurrentBlockLabel() === blockType.label ? 'activeButton' : '') ,'s-btn')}
                 key={blockType.style}
                 onMouseDown={this.clickMenu}
                 style={{ marginRight: 8 }}
                 data-key={blockType.style}
             >
-                {/* {this.getCurrentBlockLabel()} */}
                 {blockType.label}
-            </button>
+            </span>
           ))
         )
     }

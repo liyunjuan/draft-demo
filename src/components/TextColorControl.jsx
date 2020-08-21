@@ -15,7 +15,7 @@ import { SketchPicker } from 'react-color'
 export default class TextColorControl extends React.Component {
 
     state = {
-        textColor: 'rgba(0, 0, 0, 0)',
+        textColor: 'rgba(236,231,231,1)',
         isShowColor: false
     }
 
@@ -23,13 +23,11 @@ export default class TextColorControl extends React.Component {
     handleChangeComplete = (color) => {
         const newTextColor = `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`
         this.setState({ textColor: newTextColor,isShowColor: false})
-        console.log(newTextColor)
         const newEditState = toggleCustomInlineStyle(
             this.props.editorState,
-            'color',
+            'bgcolor',
             newTextColor,
           )
-          console.log(convertToRaw(newEditState.getCurrentContent()))
         this.props.onTextColorChange(newEditState)
     }
 
@@ -50,10 +48,10 @@ export default class TextColorControl extends React.Component {
     }
 
     render() {
-      const { isShowColor } = this.state;
+      const { isShowColor, textColor } = this.state;
         return (
             <div className="colorWrap">
-                <button style={{ marginLeft: 8 }} onClick={this.showColor}>文本颜色</button>
+                <span className="s-btn" style={{ marginLeft: 8, background: `${textColor}` }} onClick={this.showColor}>文本高亮</span>
                 {isShowColor ? this.renderColorPicker() : null}
             </div>
         )

@@ -17,3 +17,19 @@
   position: absolute;
   top: 20px;
 }
+
+.DraftEditor-editorContainer {
+  height: 100%;
+  overflow: auto;
+}
+
+.s-btn {
+  display: inline-block;
+  background: #ece7e7;
+  padding: 4px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.activeButton {
+  color: #0072f5;
+}

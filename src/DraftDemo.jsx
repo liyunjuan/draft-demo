@@ -12,7 +12,7 @@ import {
   // getDefaultKeyBinding,
   // Modifier,
   // SelectionState,
-  // convertToRaw,
+  convertToRaw,
   // convertFromRaw,
   RichUtils
 } from 'draft-js';
@@ -23,6 +23,7 @@ import {
 } from 'draftjs-utils'
 import Editor from 'draft-js-plugins-editor';
 import {stateToHTML} from 'draft-js-export-html';
+import draftToHtml from 'draftjs-to-html';
 
 // 加粗、下划线
 import InlineTypesControl from './components/InlineTypesControl'
@@ -45,7 +46,6 @@ class DraftDemo extends React.Component {
   onEditorFocus = () => {
     const editor = this.refs.editor 
     editor.focus()
-    console.log(1111, editor)
   }
 
   // editorState改变
@@ -58,7 +58,8 @@ class DraftDemo extends React.Component {
     }
 
     this.setState({
-      exportToHtml: stateToHTML(editorState.getCurrentContent())
+      exportToHtml: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+      // exportToHtml: stateToHTML(editorState.getCurrentContent())
     })
   }
 
@@ -127,7 +128,6 @@ class DraftDemo extends React.Component {
         //     }
         // }
         if (!classIsExist) {
-            // console.log(className,textIndent,lineHeight,letterSpacing)
             dymanicCssList.push(className)
             this.loadCssCode(`.${className} {
                 text-indent: ${textIndent};
