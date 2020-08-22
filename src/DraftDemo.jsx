@@ -6,7 +6,7 @@ import {
   // ContentState,
   // DraftEditorCommand,
   // DraftHandleValue,
-  // // Editor,
+  // Editor,
   // EditorChangeType,
   EditorState,
   // getDefaultKeyBinding,
@@ -31,6 +31,7 @@ import InlineTypesControl from './components/InlineTypesControl'
 import BlockTypesControl from './components/BlockTypesControl'
 // 字体背景颜色
 import TextColorControl from './components/TextColorControl'
+import { inlineTypes } from './config'
 
 
 class DraftDemo extends React.Component {
@@ -43,6 +44,9 @@ class DraftDemo extends React.Component {
       exportToHtml: ''
     }
   }
+  componentDidMount() {
+    this.onEditorFocus()
+  }
   onEditorFocus = () => {
     const editor = this.refs.editor 
     editor.focus()
@@ -50,27 +54,28 @@ class DraftDemo extends React.Component {
 
   // editorState改变
   onEditorStateChange = editorState => {
-    this.setState({ editorState })
+    this.setState(
+      { 
+        editorState,
+        exportToHtml: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+      }
+    )
 
-    const { onChange } = this.props
-    if (onChange) {
-        onChange(editorState)
-    }
+    // const { onChange } = this.props
+    // if (onChange) {
+    //     onChange(editorState)
+    // }
 
-    this.setState({
-      exportToHtml: draftToHtml(convertToRaw(editorState.getCurrentContent()))
-      // exportToHtml: stateToHTML(editorState.getCurrentContent())
-    })
   }
 
-  // handleKeyCommand = (command, editorState) => {
-  //   const newState = RichUtils.handleKeyCommand(editorState, command)
-  //   if (newState) {
-  //       this.onEditorStateChange(newState)
-  //       return true
-  //   }
-  //   return false
-  // }
+  handleKeyCommand = (command, editorState) => {
+    const newState = RichUtils.handleKeyCommand(editorState, command)
+    if (newState) {
+        this.onEditorStateChange(newState)
+        return true
+    }
+    return false
+  }
 
   // image,mp3,mp4的渲染组件匹配
   // mediaBlockRenderer = block => {
@@ -142,9 +147,9 @@ class DraftDemo extends React.Component {
   // 行内样式改变
   onInlineTypeChange = editorState => {
     this.onEditorStateChange(editorState)
-    setTimeout(() => {
-      this.onEditorFocus()
-    }, 0);
+    // setTimeout(() => {
+    //   this.onEditorFocus()
+    // }, 0);
   }
 
   // 块样式改变
@@ -182,10 +187,17 @@ class DraftDemo extends React.Component {
               borderBottom: '1px solid #ccc'
             }}
           >
-            <InlineTypesControl
-                editorState={this.state.editorState}
-                onInlineTypeChange={this.onInlineTypeChange}
-            />
+            {
+              inlineTypes.map(inlineTypes => (
+                <InlineTypesControl
+                    key={inlineTypes.style}
+                    editorState={this.state.editorState}
+                    onInlineTypeChange={this.onInlineTypeChange}
+                    label={inlineTypes.label}
+                    style={inlineTypes.style}
+                />
+              ))
+            }
 
             <BlockTypesControl
                 editorState={this.state.editorState}
@@ -212,9 +224,9 @@ class DraftDemo extends React.Component {
                   onChange={this.onEditorStateChange}
                   customStyleMap={getCustomStyleMap()}
                   // @ts-ignore
-                  // handleKeyCommand={this.handleKeyCommand}
+                  handleKeyCommand={this.handleKeyCommand}
                   // blockRendererFn={this.mediaBlockRenderer}
-                  // blockStyleFn={this.myBlockStyleFn}
+                  blockStyleFn={this.myBlockStyleFn}
               />
           </div>
           <div
