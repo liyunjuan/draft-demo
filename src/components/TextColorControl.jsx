@@ -43,7 +43,7 @@ export default class TextColorControl extends React.Component {
 
     showColor = () => {
       this.setState({
-        isShowColor: true
+        isShowColor: !this.state.isShowColor
       })
     }
 

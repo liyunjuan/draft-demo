@@ -16,7 +16,7 @@
 }
 .colorPop {
   position: absolute;
-  top: 20px;
+  top: 40px;
 }
 
 .DraftEditor-editorContainer {
@@ -34,4 +34,17 @@
 }
 .activeButton {
   color: #0072f5;
+}
+
+.emojiWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.emoji-wrap {
+  position: absolute;
+  top: 40px;
+  background: #eee;
+  padding: 8px;
+  border-radius: 3px;
 }

@@ -31,6 +31,9 @@ import InlineTypesControl from './components/InlineTypesControl'
 import BlockTypesControl from './components/BlockTypesControl'
 // 字体背景颜色
 import TextColorControl from './components/TextColorControl'
+// emoji
+import EmojiControl from './components/EmojiControl'
+
 import { inlineTypes } from './config'
 
 
@@ -176,6 +179,14 @@ class DraftDemo extends React.Component {
     )
   }
 
+  // 添加emoji
+  onAddEmoji = editorState => {
+    this.onEditorStateChange(editorState)
+    setTimeout(() => {
+        this.onEditorFocus()
+      }, 0);
+  }
+
   render() {
     const { exportToHtml } = this.state
     return (
@@ -207,6 +218,10 @@ class DraftDemo extends React.Component {
             <TextColorControl
               editorState={this.state.editorState}
               onTextColorChange={this.onTextColorChange}
+            />
+            <EmojiControl
+                editorState={this.state.editorState}
+                onAddEmoji={this.onAddEmoji}
             />
           </div>
 
