@@ -18,7 +18,7 @@ const blockTypes = [
   // { label: '引用', style: 'blockquote' },
   // { label: '代码', style: 'code-block' },
   // { label: 'atomic', style: 'atomic' },这个有问题
-  { label: '有序列表', style: 'ordered-list-item' },
+  // { label: '有序列表', style: 'ordered-list-item' },
   { label: '无序列表', style: 'unordered-list-item' },
 ]
 

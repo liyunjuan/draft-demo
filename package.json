@@ -16,7 +16,8 @@
     "draftjs-utils": "^0.10.2",
     "draft-js-utils": ">=0.2.0",
     "react-color": "^2.14.1",
-    "draftjs-to-html": ">=0"
+    "draftjs-to-html": ">=0",
+    "html-to-draftjs": ">=0"
   },
   "scripts": {
     "start": "react-scripts start",

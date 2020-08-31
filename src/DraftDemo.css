@@ -17,6 +17,7 @@
 .colorPop {
   position: absolute;
   top: 40px;
+  width: max-content;
 }
 
 .DraftEditor-editorContainer {
@@ -47,4 +48,21 @@
   background: #eee;
   padding: 8px;
   border-radius: 3px;
+}
+
+.editor-btn-group>span {
+  display: inline-block;
+  width: 20px;
+  margin-left: 10px;
+}
+
+.color-show {
+  width: 20px;
+  height: 20px;
+}
+.color-pick {
+  display: inline-block;
+  padding: 5px;
+  background-color: #e24;
+  margin-left: 5px;
 }

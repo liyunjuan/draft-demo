@@ -3,7 +3,7 @@ import * as React from 'react'
 import {
   // CompositeDecorator,
   // ContentBlock,
-  // ContentState,
+  ContentState,
   // DraftEditorCommand,
   // DraftHandleValue,
   // Editor,
@@ -13,7 +13,7 @@ import {
   // Modifier,
   // SelectionState,
   convertToRaw,
-  // convertFromRaw,
+  convertFromRaw,
   RichUtils
 } from 'draft-js';
 import {
@@ -22,8 +22,9 @@ import {
 //   getSelectedBlocksMetadata
 } from 'draftjs-utils'
 import Editor from 'draft-js-plugins-editor';
-import {stateToHTML} from 'draft-js-export-html';
+import {stateToHTML} from 'draft-js-export-html'; //这种导出行内样式没效果
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 // 加粗、下划线
 import InlineTypesControl from './components/InlineTypesControl'
@@ -41,14 +42,36 @@ class DraftDemo extends React.Component {
   constructor(props) {
     super(props);
 
+    // ----- 这是一种方式，加载完成之后会自动聚焦到末尾
+    const entity = {"blocks":[{"key":"5pcki","text":"今天是个好日子","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"csk9j","text":"1顶顶顶顶","type":"unordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"842lp","text":"2哒哒哒哒哒哒","type":"unordered-list-item","depth":0,"inlineStyleRanges":[{"offset":3,"length":2,"style":"bgcolor-orange"}],"entityRanges":[],"data":{}},{"key":"7q58","text":"3的点点滴滴","type":"unordered-list-item","depth":0,"inlineStyleRanges":[{"offset":3,"length":3,"style":"bgcolor-red"}],"entityRanges":[],"data":{}},{"key":"f9rc4","text":"嘿嘿嘿","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"efci4","text":"1123123434","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BOLD"},{"offset":4,"length":6,"style":"UNDERLINE"}],"entityRanges":[],"data":{}},{"key":"5ftig","text":"对对对","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}
+    const _state = EditorState.moveFocusToEnd(EditorState.createWithContent(convertFromRaw(entity)));
+    //---
+
+    // --- 这是和导出相对应的，加载完成之后需要手动聚焦到末尾
+    const entity1 = '<p>今天是个好日子</p> <ul> <li>1顶顶顶顶</li> <li>2哒哒<span style="background-color: orange;">哒哒</span>哒哒</li> <li>3的点<span style="background-color: red;">点滴滴</span></li> </ul> <p>嘿嘿嘿</p> <p><strong>1123</strong><strong><ins>123434</ins></strong></p> <p>对对对</p>'
+    const blocksFromHtml = htmlToDraft(entity1);
+    const { contentBlocks, entityMap } = blocksFromHtml;
+    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+    const _editorState = EditorState.createWithContent(contentState);
+    // ----
+
     this.state = {
-      editorState: EditorState.createEmpty(),
+      // editorState: EditorState.createEmpty(),
+      // editorState: _state,
+      editorState: _editorState,
       dymanicCssList: [],
-      exportToHtml: ''
+      exportToHtml: '',
+      aaa:''
     }
   }
   componentDidMount() {
     this.onEditorFocus()
+
+    // 对于第二种方式自动聚焦到末尾
+    const _ent = EditorState.moveFocusToEnd(this.state.editorState);
+    this.setState({
+      editorState: _ent
+    })
   }
   onEditorFocus = () => {
     const editor = this.refs.editor 
@@ -60,7 +83,9 @@ class DraftDemo extends React.Component {
     this.setState(
       { 
         editorState,
-        exportToHtml: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+        exportToHtml: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+        // exportToHtml: stateToHTML(editorState.getCurrentContent()),   //这种方式导出，对于背景色没有特殊导出
+        aaa: JSON.stringify(convertToRaw(editorState.getCurrentContent()))
       }
     )
 
@@ -187,8 +212,20 @@ class DraftDemo extends React.Component {
       }, 0);
   }
 
+  customColorStyleMap = {
+    'bgcolor-red': { backgroundColor: '#e24' },
+    // 'bgcolor-blue': { color: '#39f' },
+    'bgcolor-blue': { backgroundColor: '#39f' },
+    'bgcolor-orange': { backgroundColor: '#f93' },
+    'bgcolor-green': { backgroundColor: '#3a6' },
+    ...getCustomStyleMap()
+  };
+  componentDidUpdate(){
+
+  }
+
   render() {
-    const { exportToHtml } = this.state
+    const { exportToHtml, aaa } = this.state
     return (
       <div className="contentWrap" style={{ border: '1px solid #fff', lineHeight: 1.5 }}>
           <div
@@ -219,10 +256,10 @@ class DraftDemo extends React.Component {
               editorState={this.state.editorState}
               onTextColorChange={this.onTextColorChange}
             />
-            <EmojiControl
+            {/* <EmojiControl
                 editorState={this.state.editorState}
                 onAddEmoji={this.onAddEmoji}
-            />
+            /> */}
           </div>
 
           <div
@@ -237,9 +274,9 @@ class DraftDemo extends React.Component {
                   ref="editor"
                   editorState={this.state.editorState}
                   onChange={this.onEditorStateChange}
-                  customStyleMap={getCustomStyleMap()}
-                  // @ts-ignore
-                  handleKeyCommand={this.handleKeyCommand}
+                  // customStyleMap={getCustomStyleMap()}
+                  customStyleMap={this.customColorStyleMap}
+                  handleKeyCommand={this.handleKeyCommand}  //这写了支持快捷键
                   // blockRendererFn={this.mediaBlockRenderer}
                   blockStyleFn={this.myBlockStyleFn}
               />
@@ -254,6 +291,8 @@ class DraftDemo extends React.Component {
             <p>转换为html：</p>
             <div className="htmlWrap">
               {exportToHtml}
+              <p></p>
+              {/* {aaa} */}
             </div>
           </div>
       </div>
