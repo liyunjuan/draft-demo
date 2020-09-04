@@ -11,6 +11,7 @@ import {
     getSelectionCustomInlineStyle,
   } from 'draftjs-utils'
 import { SketchPicker } from 'react-color'
+import { customColorStyleArr } from '../config'
 
 export default class TextColorControl extends React.Component {
 
@@ -37,11 +38,22 @@ export default class TextColorControl extends React.Component {
     renderColorPicker = () => {
         return (
           <div className="colorPop">
+            {
+              customColorStyleArr.map(color => {
+                if(color === 'seprator') {
+                  return <span className="color-seprator"></span>
+                }
+                return <span className="color-pick" data-color={color} onClick={this.handleChangeComplete} style={{backgroundColor: `${color}`}}></span>
+              })
+            }
             {/* <SketchPicker color={this.state.textColor} onChangeComplete={this.handleChangeComplete} /> */}
-            <span className="color-pick" data-color='red' onClick={this.handleChangeComplete} style={{backgroundColor: 'red'}}>红色</span>
-            <span className="color-pick" data-color='blue' onClick={this.handleChangeComplete} style={{backgroundColor: 'blue'}}>blue</span>
-            <span className="color-pick" data-color='orange' onClick={this.handleChangeComplete} style={{backgroundColor: 'orange'}}>orange</span>
-            <span className="color-pick" data-color='green' onClick={this.handleChangeComplete} style={{backgroundColor: 'green'}}>green</span>
+            {/* <span className="color-pick" data-color='#ffbcb2' onClick={this.handleChangeComplete} style={{backgroundColor: '#ffbcb2'}}>color1</span>
+            <span className="color-pick" data-color='rgb(255,211,126)' onClick={this.handleChangeComplete} style={{backgroundColor: 'rgb(255,211,126)'}}>color2</span>
+            <span className="color-pick" data-color='rgb(148,238,221)' onClick={this.handleChangeComplete} style={{backgroundColor: 'rgb(148,238,221)'}}>color3</span>
+            <span className="color-pick" data-color='rgb(167,206,255)' onClick={this.handleChangeComplete} style={{backgroundColor: 'rgb(167,206,255)'}}>color4</span>
+            <span className="color-pick" data-color='rgb(233,235,242)' onClick={this.handleChangeComplete} style={{backgroundColor: 'rgb(233,235,242)'}}>color5</span>
+            <span className="color-pick" data-color='rgb(255,255,255)' onClick={this.handleChangeComplete} style={{backgroundColor: 'rgb(255,255,255)', border: '1px solid #eee'}}>none</span>
+            <span className="color-pick" data-color='#ff00ff' onClick={this.handleChangeComplete} style={{backgroundColor: '#ff00ff'}}>try</span> */}
           </div>
         )
 

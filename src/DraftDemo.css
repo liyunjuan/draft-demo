@@ -18,6 +18,10 @@
   position: absolute;
   top: 40px;
   width: max-content;
+
+  border: 1px solid #eee;
+  padding: 10px;
+  background: #fff;
 }
 
 .DraftEditor-editorContainer {
@@ -62,7 +66,12 @@
 }
 .color-pick {
   display: inline-block;
-  padding: 5px;
+  padding: 12px;
   background-color: #e24;
   margin-left: 5px;
+  cursor: pointer;
+}
+
+.color-pick:last-child {
+  border: 1px solid #eee;
 }
